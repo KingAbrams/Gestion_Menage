@@ -3,14 +3,14 @@ import type { Knex } from "knex";
 const up = async (knex: Knex): Promise<void> => {
   await knex.schema.createTable("person", (table) => {
     table.increments("id").primary();
-    table.string("firstname").notNullable();
+    table.string("firstname").nullable();
     table.string("lastname").notNullable();
-    table.string("birthday").notNullable();
-    table.string("cin").notNullable().unique();
+    table.date("birthday").notNullable();
+    table.string("cin").nullable().unique();
     table.string("nationality").notNullable();
     table.string("linkWithChief").notNullable();
-    table.string("job").notNullable();
-    table.string("otherSource").notNullable();
+    table.string("job").nullable();
+    table.string("otherSource").nullable();
     table.timestamps(true, true);
   });
 };

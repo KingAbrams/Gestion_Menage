@@ -1,3 +1,5 @@
+import knex from "knex";
+
 const knexConfig = {
   client: "pg",
   connection: {
@@ -13,4 +15,6 @@ const knexConfig = {
   },
 };
 
-export default knexConfig;
+const db = knex(knexConfig);
+
+export default db;
