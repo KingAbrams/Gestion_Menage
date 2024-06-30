@@ -4,13 +4,8 @@ import PersonService from "../services/PersonService";
 class PersonController {
   private personService: PersonService;
 
-  constructor(personService: PersonService) {
-    this.personService = personService;
-  }
-
-  public static factory(): PersonController {
-    const personService = new PersonService();
-    return new PersonController(personService);
+  constructor() {
+    this.personService = new PersonService();
   }
 
   getAllPersons = async (req: Request, res: Response): Promise<void> => {
