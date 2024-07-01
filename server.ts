@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import multer from "multer";
-import personRoutes from "./src/core/routes/personnRoute";
+import personRoutes from "./src/core/routes/personRoute";
 import config from "./src/config";
 import checkConnection from "./src/config/checkConnectionDb";
 
