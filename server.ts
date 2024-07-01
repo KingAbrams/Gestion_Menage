@@ -1,13 +1,19 @@
 import express from "express";
+import bodyParser from "body-parser";
+import multer from "multer";
 import personRoutes from "./src/core/routes/personnRoute";
 import config from "./src/config";
 import checkConnection from "./src/config/checkConnectionDb";
 
 const app = express();
+const upload = multer();
 
 const startServer = async () => {
   try {
     await checkConnection();
+
+    app.use(bodyParser.json());
+    app.use(upload.none());
 
     app.use("/", personRoutes);
 

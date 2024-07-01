@@ -4,10 +4,32 @@ const prisma = new PrismaClient();
 class PersonService {
   async getAllPersons(): Promise<Person[]> {
     try {
-      const data = await prisma.person.findMany({});
-      return data;
+      const allPersons = await prisma.person.findMany({});
+      return allPersons;
     } catch (error) {
       throw new Error(`Error fetching persons: ${error}`);
+    }
+  }
+
+  async getPersonById(id: number): Promise<Person | null> {
+    try {
+      const person = await prisma.person.findUnique({
+        where: { id },
+      });
+      return person;
+    } catch (error) {
+      throw new Error(`Error fetching person with id ${id}: ${error}`);
+    }
+  }
+
+  async createPerson(
+    data: Omit<Person, "id" | "createdAt" | "updatedAt">,
+  ): Promise<Person> {
+    try {
+      const newPerson = await prisma.person.create({ data });
+      return newPerson;
+    } catch (error) {
+      throw new Error(`Error creating persons: ${error}`);
     }
   }
 }
