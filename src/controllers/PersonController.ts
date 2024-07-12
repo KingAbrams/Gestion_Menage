@@ -56,16 +56,17 @@ class PersonController {
         });
       }
 
-      console.log("[Database] Successfully added default Person:");
+      console.log("[Initialization] Successfully added default Person:");
     } catch (error) {
-      console.error("Error initializing default Person:", error);
+      console.error("[Error initializing] default Person:", error);
     }
   };
 
   getAllPersons = async (req: Request, res: Response): Promise<void> => {
     try {
       const persons = await this.personService.getAllPersons();
-      res.status(200).json(persons);
+
+      res.status(200).json({ message: "Fetch successful", data: persons });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -74,15 +75,21 @@ class PersonController {
   getPersonById = async (req: Request, res: Response): Promise<void> => {
     try {
       const id = parseInt(req.params.id, 10);
+
+      if (isNaN(id)) {
+        res.status(400).json({ message: "Invalid ID format" });
+        return;
+      }
+
       const person = await this.personService.getPersonById(id);
 
       if (person) {
-        res.status(200).json(person);
+        res.status(200).json({ message: "Fetch successful", data: person });
       } else {
         res.status(404).json({ message: "Person not found" });
       }
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ message: `Error: ${error}` });
     }
   };
 
@@ -106,7 +113,7 @@ class PersonController {
         !linkWithChief ||
         !otherSource
       ) {
-        res.status(400).json({ error: "Missing required fields" });
+        res.status(400).json({ message: "Missing required fields" });
         return;
       }
 
@@ -120,9 +127,30 @@ class PersonController {
         job,
         otherSource,
       });
-      res.status(201).json(newPerson);
+
+      res.status(201).json({
+        message: "Creation successful",
+        data: newPerson,
+      });
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ message: `Error: ${error}` });
+    }
+  };
+
+  deletePerson = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id = parseInt(req.params.id, 10);
+
+      if (isNaN(id)) {
+        res.status(400).json({ message: "Invalid ID format" });
+        return;
+      }
+
+      const result = await this.personService.deletePerson(id);
+
+      res.status(200).json({ message: "Deletion successful", data: result });
+    } catch (error) {
+      res.status(500).json({ message: `Error: ${error}` });
     }
   };
 }

@@ -9,6 +9,7 @@ router.get("/", (req: Request, res: Response) => {
 router.get("/api/persons", personController.getAllPersons);
 router.get("/api/persons/:id", personController.getPersonById);
 router.post("/api/persons", personController.createPerson);
+router.delete("/api/persons/:id", personController.deletePerson);
 
 router.use((_req: Request, res: Response, _next: NextFunction) => {
   res.status(404).send("Resource not found, try another URL");

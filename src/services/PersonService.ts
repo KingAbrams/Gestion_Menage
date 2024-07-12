@@ -5,6 +5,7 @@ class PersonService {
   async getAllPersons(): Promise<Person[]> {
     try {
       const allPersons = await prisma.person.findMany({});
+
       return allPersons;
     } catch (error) {
       throw new Error(`Error fetching persons: ${error}`);
@@ -16,9 +17,10 @@ class PersonService {
       const person = await prisma.person.findUnique({
         where: { id },
       });
+
       return person;
     } catch (error) {
-      throw new Error(`Error fetching person with id ${id}: ${error}`);
+      throw new Error(`Error fetching person by id: ${error}`);
     }
   }
 
@@ -27,9 +29,22 @@ class PersonService {
   ): Promise<Person> {
     try {
       const newPerson = await prisma.person.create({ data });
+
       return newPerson;
     } catch (error) {
-      throw new Error(`Error creating persons: ${error}`);
+      throw new Error(`Error creating person: ${error}`);
+    }
+  }
+
+  async deletePerson(id: number): Promise<Person> {
+    try {
+      const person = await prisma.person.delete({
+        where: { id },
+      });
+
+      return person;
+    } catch (error) {
+      throw new Error(`Error deleting person: ${error}`);
     }
   }
 }
