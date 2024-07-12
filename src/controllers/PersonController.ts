@@ -44,7 +44,7 @@ class PersonController {
           throw new Error("Missing required fields for person");
         }
 
-        await this.personService.createPerson({
+        const result = await this.personService.createPerson({
           lastname,
           firstname,
           birthday,
@@ -54,11 +54,18 @@ class PersonController {
           job,
           otherSource,
         });
+
+        if (!result) {
+          console.error(
+            "[Initialization] Unique constraint failed on the field",
+          );
+          return;
+        }
       }
 
       console.log("[Initialization] Successfully added default Person:");
     } catch (error) {
-      console.error("[Error initializing] default Person:", error);
+      console.error("[Initialization] default Person:", error);
     }
   };
 
@@ -68,7 +75,7 @@ class PersonController {
 
       res.status(200).json({ message: "Fetch successful", data: persons });
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ message: `Error: ${error}` });
     }
   };
 
@@ -128,6 +135,13 @@ class PersonController {
         otherSource,
       });
 
+      if (!newPerson) {
+        res
+          .status(400)
+          .json({ message: "Unique constraint failed on the field" });
+        return;
+      }
+
       res.status(201).json({
         message: "Creation successful",
         data: newPerson,
@@ -147,6 +161,11 @@ class PersonController {
       }
 
       const result = await this.personService.deletePerson(id);
+
+      if (!result) {
+        res.status(404).json({ message: "Person does not exist" });
+        return;
+      }
 
       res.status(200).json({ message: "Deletion successful", data: result });
     } catch (error) {

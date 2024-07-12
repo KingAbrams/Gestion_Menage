@@ -1,4 +1,5 @@
 import { Person, PrismaClient } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 const prisma = new PrismaClient();
 
 class PersonService {
@@ -26,17 +27,24 @@ class PersonService {
 
   async createPerson(
     data: Omit<Person, "id" | "createdAt" | "updatedAt">,
-  ): Promise<Person> {
+  ): Promise<Person | null> {
     try {
       const newPerson = await prisma.person.create({ data });
 
       return newPerson;
     } catch (error) {
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2002"
+      ) {
+        return null;
+      }
+
       throw new Error(`Error creating person: ${error}`);
     }
   }
 
-  async deletePerson(id: number): Promise<Person> {
+  async deletePerson(id: number): Promise<Person | null> {
     try {
       const person = await prisma.person.delete({
         where: { id },
@@ -44,6 +52,12 @@ class PersonService {
 
       return person;
     } catch (error) {
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        return null;
+      }
       throw new Error(`Error deleting person: ${error}`);
     }
   }
