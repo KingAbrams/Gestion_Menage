@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import path from "path";
+import fs from "fs";
 import PersonService from "../services/PersonService";
 
 class PersonController {
@@ -7,6 +9,58 @@ class PersonController {
   constructor() {
     this.personService = new PersonService();
   }
+
+  initializePersonDb = async () => {
+    const personJsonFilePath = path.join(
+      __dirname,
+      "..",
+      "data",
+      "persons.json",
+    );
+
+    try {
+      const jsonData = fs.readFileSync(personJsonFilePath, "utf-8");
+      const persons = JSON.parse(jsonData);
+
+      for (const person of persons) {
+        const {
+          lastname,
+          firstname,
+          birthday,
+          cin,
+          nationality,
+          linkWithChief,
+          job,
+          otherSource,
+        } = person;
+
+        if (
+          !lastname ||
+          !birthday ||
+          !nationality ||
+          !linkWithChief ||
+          !otherSource
+        ) {
+          throw new Error("Missing required fields for person");
+        }
+
+        await this.personService.createPerson({
+          lastname,
+          firstname,
+          birthday,
+          cin,
+          nationality,
+          linkWithChief,
+          job,
+          otherSource,
+        });
+      }
+
+      console.log("[Database] Successfully added default Person:");
+    } catch (error) {
+      console.error("Error initializing default Person:", error);
+    }
+  };
 
   getAllPersons = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -45,7 +99,13 @@ class PersonController {
         otherSource,
       } = req.body;
 
-      if (!lastname || !birthday || !nationality) {
+      if (
+        !lastname ||
+        !birthday ||
+        !nationality ||
+        !linkWithChief ||
+        !otherSource
+      ) {
         res.status(400).json({ error: "Missing required fields" });
         return;
       }

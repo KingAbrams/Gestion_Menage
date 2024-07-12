@@ -1,0 +1,19 @@
+[
+  {
+    "firstname": "Hannael",
+    "lastname": "Abrams",
+    "birthday": "12-06-2000",
+    "cin": "123456789",
+    "nationality": "Malgache",
+    "linkWithChief": "Chef",
+    "job": "Développeur",
+    "otherSource": "Non"
+  },
+  {
+    "lastname": "Joel",
+    "birthday": "17-12-1999",
+    "nationality": "Malgache",
+    "linkWithChief": "Chef",
+    "otherSource": "Non"
+  }
+]
