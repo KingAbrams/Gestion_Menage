@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import PersonService from "../services/PersonService";
 import { Person, Prisma } from "@prisma/client";
+import { logger } from "../config/logger";
 
 class PersonController {
   private personService: PersonService;
@@ -24,11 +25,11 @@ class PersonController {
       const persons: Prisma.PersonCreateManyInput[] = JSON.parse(jsonData);
       const result = await this.personService.initializePerson(persons);
 
-      console.log(
+      logger.info(
         `[Initialization] Successfully added default Person [Count: ${result.length}]`,
       );
     } catch (error) {
-      console.error("[Initialization] default Person:", error);
+      logger.error("[Initialization] default Person:", error);
     }
   };
 
@@ -38,6 +39,7 @@ class PersonController {
 
       res.status(200).json({ message: "Fetch successful", data: persons });
     } catch (error) {
+      logger.error(error);
       res.status(500).json({ message: `Error: ${error}` });
     }
   };
@@ -59,6 +61,7 @@ class PersonController {
         res.status(404).json({ message: "Person not found" });
       }
     } catch (error) {
+      logger.error(error);
       res.status(500).json({ message: `Error: ${error}` });
     }
   };
@@ -110,6 +113,7 @@ class PersonController {
         data: newPerson,
       });
     } catch (error) {
+      logger.error(error);
       res.status(500).json({ message: `Error: ${error}` });
     }
   };
@@ -128,6 +132,7 @@ class PersonController {
 
       res.status(200).json({ message: "Update successful", data: result });
     } catch (error) {
+      logger.error(error);
       res.status(500).json({ message: `Error: ${error}` });
     }
   };
@@ -150,6 +155,7 @@ class PersonController {
 
       res.status(200).json({ message: "Deletion successful", data: result });
     } catch (error) {
+      logger.error(error);
       res.status(500).json({ message: `Error: ${error}` });
     }
   };
