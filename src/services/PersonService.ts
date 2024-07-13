@@ -1,4 +1,4 @@
-import { Person, PrismaClient } from "@prisma/client";
+import { Person, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 const prisma = new PrismaClient();
 
@@ -25,9 +25,22 @@ class PersonService {
     }
   }
 
-  async createPerson(
-    data: Omit<Person, "id" | "createdAt" | "updatedAt">,
-  ): Promise<Person | null> {
+  async initializePerson(
+    data: Prisma.PersonCreateManyInput[],
+  ): Promise<Person[]> {
+    try {
+      const newPerson = await prisma.person.createManyAndReturn({
+        data,
+        skipDuplicates: true,
+      });
+
+      return newPerson;
+    } catch (error) {
+      throw new Error(`Error initializing person: ${error}`);
+    }
+  }
+
+  async createPerson(data: Prisma.PersonCreateInput): Promise<Person | null> {
     try {
       const newPerson = await prisma.person.create({ data });
 
@@ -44,13 +57,29 @@ class PersonService {
     }
   }
 
+  async updatePerson(
+    id: number,
+    data: Prisma.PersonUpdateInput,
+  ): Promise<Person> {
+    try {
+      const updatedPerson = await prisma.person.update({
+        where: { id },
+        data,
+      });
+
+      return updatedPerson;
+    } catch (error) {
+      throw new Error(`Error updating person: ${error}`);
+    }
+  }
+
   async deletePerson(id: number): Promise<Person | null> {
     try {
-      const person = await prisma.person.delete({
+      const deletedPerson = await prisma.person.delete({
         where: { id },
       });
 
-      return person;
+      return deletedPerson;
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&

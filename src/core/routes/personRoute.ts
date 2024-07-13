@@ -9,6 +9,7 @@ router.get("/", (req: Request, res: Response) => {
 router.get("/api/persons", personController.getAllPersons);
 router.get("/api/persons/:id", personController.getPersonById);
 router.post("/api/persons", personController.createPerson);
+router.put("/api/persons/:id", personController.updatePerson);
 router.delete("/api/persons/:id", personController.deletePerson);
 
 router.use((_req: Request, res: Response, _next: NextFunction) => {
