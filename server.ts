@@ -15,10 +15,12 @@ app.use(upload.none());
 
 app.use("/", personRoutes);
 
-app
+const server = app
   .listen(config.port, () => {
     console.log("[Server API] Server running at PORT: ", config.port);
   })
   .on("[Server API] Server error", (error) => {
     throw new Error(error.message);
   });
+
+export default server;
