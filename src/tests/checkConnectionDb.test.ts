@@ -12,7 +12,7 @@ jest.mock("../config/logger.ts", () => {
   };
 });
 
-describe.skip("[DATABASE] Check connection", () => {
+describe("[DATABASE] Check connection", () => {
   let queryMethodMock: jest.SpyInstance;
 
   beforeEach(() => {

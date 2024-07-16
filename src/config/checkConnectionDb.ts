@@ -3,7 +3,7 @@ import { Pool } from "pg";
 import PersonController from "../controllers/PersonController";
 import { logger } from "./logger";
 
-const pool = new Pool(config.db);
+export const pool = new Pool(config.db);
 const personController = new PersonController();
 
 const checkConnection = async () => {

@@ -1,7 +1,7 @@
 import PersonService from "../services/PersonService";
 import { personSample } from "./fixtures/personSample";
 
-describe.skip("[PERSON SERVICE]", () => {
+describe("[PERSON SERVICE]", () => {
   describe("[getAllPersons]", () => {
     test("Should return data successfully when fetch is successful", async () => {
       const personService = new PersonService();

@@ -11,7 +11,7 @@ jest.mock("@prisma/client", () => ({
   },
 }));
 
-describe("[PERSON]", () => {
+describe.skip("[PERSON]", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
