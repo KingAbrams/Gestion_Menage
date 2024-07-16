@@ -28,6 +28,7 @@ class PersonController {
       logger.info(
         `[Initialization] Successfully added default Person [Count: ${result.length}]`,
       );
+      return result;
     } catch (error) {
       logger.error("[Initialization] default Person:", error);
     }

@@ -1,11 +1,14 @@
 import { Person, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-const prisma = new PrismaClient();
 
 class PersonService {
+  prisma: PrismaClient;
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
   async getAllPersons(): Promise<Person[]> {
     try {
-      const allPersons = await prisma.person.findMany({});
+      const allPersons = await this.prisma.person.findMany({});
 
       return allPersons;
     } catch (error) {
@@ -15,7 +18,7 @@ class PersonService {
 
   async getPersonById(id: number): Promise<Person | null> {
     try {
-      const person = await prisma.person.findUnique({
+      const person = await this.prisma.person.findUnique({
         where: { id },
       });
 
@@ -29,7 +32,7 @@ class PersonService {
     data: Prisma.PersonCreateManyInput[],
   ): Promise<Person[]> {
     try {
-      const newPerson = await prisma.person.createManyAndReturn({
+      const newPerson = await this.prisma.person.createManyAndReturn({
         data,
         skipDuplicates: true,
       });
@@ -42,7 +45,7 @@ class PersonService {
 
   async createPerson(data: Prisma.PersonCreateInput): Promise<Person | null> {
     try {
-      const newPerson = await prisma.person.create({ data });
+      const newPerson = await this.prisma.person.create({ data });
 
       return newPerson;
     } catch (error) {
@@ -62,7 +65,7 @@ class PersonService {
     data: Prisma.PersonUpdateInput,
   ): Promise<Person> {
     try {
-      const updatedPerson = await prisma.person.update({
+      const updatedPerson = await this.prisma.person.update({
         where: { id },
         data,
       });
@@ -75,7 +78,7 @@ class PersonService {
 
   async deletePerson(id: number): Promise<Person | null> {
     try {
-      const deletedPerson = await prisma.person.delete({
+      const deletedPerson = await this.prisma.person.delete({
         where: { id },
       });
 
