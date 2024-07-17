@@ -1,7 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
 import PersonController from "../../controllers/PersonController";
+import PersonService from "../../services/PersonService";
 const router = Router();
-const personController = new PersonController();
+const personService = new PersonService();
+const personController = new PersonController(personService);
 
 router.get("/", (req: Request, res: Response) => {
   res.status(200).send("Household Management");

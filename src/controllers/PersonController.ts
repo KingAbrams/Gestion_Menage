@@ -8,8 +8,8 @@ import { logger } from "../config/logger";
 class PersonController {
   private personService: PersonService;
 
-  constructor() {
-    this.personService = new PersonService();
+  constructor(personService: PersonService = new PersonService()) {
+    this.personService = personService;
   }
 
   initializePersonDb = async () => {
