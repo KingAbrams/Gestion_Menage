@@ -2,6 +2,7 @@ import type { Config } from "jest";
 
 const config: Config = {
   collectCoverage: false,
+  verbose: true,
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   collectCoverageFrom: ["src/**/*.ts"],
