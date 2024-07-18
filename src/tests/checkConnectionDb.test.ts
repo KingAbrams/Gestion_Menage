@@ -1,7 +1,10 @@
 import checkConnection, { pool } from "../config/checkConnectionDb";
 import { logger } from "../config/logger";
 import PersonController from "../controllers/PersonController";
+import { globalBeforeAllPerson } from "./config/personSetup";
 import { personSample } from "./fixtures/personSample";
+
+globalBeforeAllPerson();
 
 jest.mock("../config/logger.ts", () => {
   return {

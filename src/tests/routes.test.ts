@@ -3,8 +3,8 @@ import request from "supertest";
 import { pool } from "../config/checkConnectionDb";
 import bodyParser from "body-parser";
 import personRoutes from "../core/routes/personRoute";
-import { PrismaClient } from "@prisma/client";
 import { personSample } from "./fixtures/personSample";
+import { PrismaClient } from "@prisma/client";
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 app.use("/", personRoutes);
 
-afterEach(async () => {
+beforeEach(async () => {
   const prisma = new PrismaClient();
   await prisma.person.deleteMany({});
 });

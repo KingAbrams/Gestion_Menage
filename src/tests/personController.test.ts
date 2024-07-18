@@ -3,6 +3,9 @@ import PersonService from "../services/PersonService";
 import { Request, Response } from "express";
 import { personSample } from "./fixtures/personSample";
 import { logger } from "../config/logger";
+import { globalBeforeAllPerson } from "./config/personSetup";
+
+globalBeforeAllPerson();
 
 jest.mock("../services/PersonService.ts");
 jest.mock("../config/logger.ts", () => {
