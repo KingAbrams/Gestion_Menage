@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import path from "path";
 import fs from "fs";
 import PersonService from "../services/PersonService";
-import { Person, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { logger } from "../config/logger";
 
 class PersonController {
