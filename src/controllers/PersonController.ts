@@ -5,6 +5,12 @@ import PersonService from "../services/PersonService";
 import { Prisma } from "@prisma/client";
 import { logger } from "../config/logger";
 
+interface CustomRequest extends Request {
+  exp?: number;
+  userId?: string;
+  email?: string;
+}
+
 class PersonController {
   private personService: PersonService;
 
@@ -34,7 +40,7 @@ class PersonController {
     }
   };
 
-  getAllPersons = async (req: Request, res: Response): Promise<void> => {
+  getAllPersons = async (req: CustomRequest, res: Response): Promise<void> => {
     try {
       const persons = await this.personService.getAllPersons();
 

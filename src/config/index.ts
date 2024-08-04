@@ -12,7 +12,7 @@ const config = {
     port: Number(process.env.DB_PORT) || 5432,
   },
   jwt: {
-    secret: process.env.JWT_SECRET || "",
+    accessSecret: process.env.JWT_ACCES_TOKEN_SECRET || "",
   },
 };
 
