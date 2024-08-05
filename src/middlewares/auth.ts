@@ -47,7 +47,7 @@ const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     res
-      .status(401)
+      .status(400)
       .json({ message: "User is not authorized to access this resource" });
     return;
   }
